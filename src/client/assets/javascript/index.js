@@ -34,18 +34,28 @@ function setupClickHandlers() {
 	document.addEventListener(
 		'click',
 		function (event) {
-			const { target } = event;
+			let { target } = event;
 
 			// Race track form field
-			if (target.matches('.card.track')) {
+			if (
+				target.matches('.card.track') ||
+				target.parentNode.matches('.card.track')
+			) {
+				if (target.parentNode.matches('.card.track')) {
+					target = target.parentNode;
+				}
 				handleSelectTrack(target);
 			}
-
 			// Podracer form field
-			if (target.matches('.card.podracer')) {
+			if (
+				target.matches('.card.podracer') ||
+				target.parentNode.matches('.card.podracer')
+			) {
+				if (target.parentNode.matches('.card.podracer')) {
+					target = target.parentNode;
+				}
 				handleSelectPodRacer(target);
 			}
-
 			// Submit create race form
 			if (target.matches('#submit-create-race')) {
 				event.preventDefault();
@@ -143,7 +153,6 @@ async function runCountdown() {
 				if (timer === 0) {
 					clearInterval(interval);
 					resolve();
-					return;
 				}
 			}
 
@@ -217,9 +226,9 @@ function renderRacerCard(racer) {
 	return `
 		<li class="card podracer" id="${id}">
 			<h3>${driver_name}</h3>
-			<p>${top_speed}</p>
-			<p>${acceleration}</p>
-			<p>${handling}</p>
+			<p>Top Speed: ${top_speed}</p>
+			<p>Acceleration: ${acceleration}</p>
+			<p>Handling: ${handling}</p>
 		</li>
 	`;
 }
@@ -270,7 +279,7 @@ function renderRaceStartView(track, racers) {
 			<section id="accelerate">
 				<h2>Directions</h2>
 				<p>Click the button as fast as you can to make your racer go faster!</p>
-				<button id="gas-peddle">Click Me To Win!</button>
+				<button id="gas-peddle"></button>
 			</section>
 		</main>
 		<footer></footer>

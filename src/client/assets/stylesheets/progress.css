@@ -19,8 +19,9 @@ section#accelerate button {
     width: 300px;
     margin: 30px auto;
     border-radius: 180%;
-    background-color: green;
-    border-color: rgb(14, 166, 6);
+    background-image: url('https://tse1.mm.bing.net/th?id=OIP.Xqc_lTGc9PEYbxZl_hV8QAHaGm&pid=Api');
+    background-position: center;
+    background-size: cover;
     cursor: pointer;
 }
 
