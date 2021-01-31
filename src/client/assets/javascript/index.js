@@ -77,19 +77,19 @@ async function delay(ms) {
 async function handleCreateRace() {
 	// render starting UI
 	try {
-		const { racer_id, track_id } = store;
-		renderAt('#race', renderRaceStartView(track_id, racer_id));
+		const { player_id, track_id } = store;
+		renderAt('#race', renderRaceStartView(track_id));
 
 		// TODO - Get player_id and track_id from the store
 		// TODO - invoke the API call to create the race, then save the result
-		const race = await createRace(racer_id, track_id);
-		console.log(race.ID);
+		const race = await createRace(player_id, track_id);
+
 		// TODO - update the store with the race id
 		store = { ...store, race_id: race.ID - 1 };
 		// The race has been created, now start the countdown
 		// TODO - call the async function runCountdown
 		await runCountdown();
-		console.log(store.race_id);
+
 		// TODO - call the async function startRace
 		await startRace(store.race_id);
 		// TODO - call the async function runRace
@@ -115,10 +115,12 @@ function runRace(raceID) {
 
 			// TODO - if the race info status property is "finished", run the following:
 			if (race.status === 'finished') {
+				console.log('race over');
 				clearInterval(raceInterval); // to stop the interval from repeating
 				renderAt('#race', resultsView(race.positions)); // to render the results view
 				resolve(race); // resolve the promise
 			}
+			//TODO: catch for if everyone else finishes race except player?
 		}
 	}).catch((error) =>
 		console.error(`this promise caught an error: ${error}`)
@@ -165,7 +167,7 @@ function handleSelectPodRacer(target) {
 	target.classList.add('selected');
 
 	// TODO - save the selected racer to the store
-	store = { ...store, racer_id: target.id };
+	store = { ...store, player_id: target.id };
 }
 
 function handleSelectTrack(target) {
@@ -187,7 +189,7 @@ function handleSelectTrack(target) {
 function handleAccelerate() {
 	console.log('accelerate button clicked');
 	// TODO - Invoke the API call to accelerate
-	accelerate();
+	accelerate(store.race_id);
 }
 
 // HTML VIEWS ------------------------------------------------
@@ -290,7 +292,7 @@ function resultsView(positions) {
 }
 
 function raceProgress(positions) {
-	let userPlayer = positions.find((e) => e.id === store.player_id);
+	let userPlayer = positions.find((e) => e.id == store.player_id);
 	userPlayer.driver_name += ' (you)';
 
 	positions = positions.sort((a, b) => (a.segment > b.segment ? -1 : 1));
@@ -388,10 +390,9 @@ function accelerate(id) {
 	// POST request to `${SERVER}/api/races/${id}/accelerate`
 	// options parameter provided as defaultFetchOpts
 	// no body or datatype needed for this request
-	return fetch(`${SERVER}/api/races/${id}/accelerate`, {
+	fetch(`${SERVER}/api/races/${id}/accelerate`, {
 		method: 'POST',
 		...defaultFetchOpts(),
-	})
-		.then((res) => res.json())
-		.catch((err) => console.log('Problem with accelerate request::', err));
+	});
+	return 'accelerating';
 }
