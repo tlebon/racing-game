@@ -1,7 +1,7 @@
 // PROVIDED CODE BELOW (LINES 1 - 80) DO NOT REMOVE
 
 // The store will hold all information needed globally
-var store = {
+let store = {
 	track_id: undefined,
 	player_id: undefined,
 	race_id: undefined,
@@ -57,11 +57,21 @@ function setupClickHandlers() {
 				handleSelectPodRacer(target);
 			}
 			// Submit create race form
-			if (target.matches('#submit-create-race')) {
+			if (
+				target.matches('#submit-create-race') &&
+				store.player_id !== undefined &&
+				store.track_id !== undefined
+			) {
 				event.preventDefault();
 
 				// start race
 				handleCreateRace();
+			}
+			if (
+				target.matches('#submit-create-race') &&
+				(store.player_id === undefined || store.track_id === undefined)
+			) {
+				event.preventDefault();
 			}
 
 			// Handle acceleration click
@@ -121,7 +131,7 @@ function runRace(raceID) {
 				renderAt('#race', resultsView(race.positions)); // to render the results view
 				resolve(race); // resolve the promise}
 			};
-			let race = await getRace(raceID).catch((error) =>
+			const race = await getRace(raceID).catch((error) =>
 				console.error(error)
 			);
 			if (race.status === 'in-progress') {
@@ -134,7 +144,7 @@ function runRace(raceID) {
 				raceOver();
 			}
 			//catch for if everyone else finishes race except player?
-			let lastRacer =
+			const lastRacer =
 				race.positions.filter((racer) => !('final_position' in racer))
 					.length == 1;
 			if (lastRacer) {
@@ -155,20 +165,19 @@ async function runCountdown() {
 		let timer = 3;
 
 		return new Promise((resolve) => {
-			// TODO - use Javascript's built in setInterval method to count down once per second
+			//use Javascript's built in setInterval method to count down once per second
 			let interval = setInterval(timerFunc, 1000);
 			function timerFunc() {
 				// run this DOM manipulation to decrement the countdown for the user
 				document.getElementById('big-numbers').innerHTML = --timer;
 				if (timer === 0) {
+					// if the countdown is done, clear the interval, resolve the promise, and return
 					document.getElementById('big-numbers').innerHTML =
 						'Here Wee Goo!!';
 					clearInterval(interval);
 					resolve();
 				}
 			}
-
-			// TODO - if the countdown is done, clear the interval, resolve the promise, and return
 		});
 	} catch (error) {
 		console.log(error);
@@ -187,7 +196,7 @@ function handleSelectPodRacer(target) {
 	// add class selected to current target
 	target.classList.add('selected');
 
-	// TODO - save the selected racer to the store
+	//save the selected racer to the store
 	store = { ...store, player_id: target.id };
 }
 
@@ -203,12 +212,12 @@ function handleSelectTrack(target) {
 	// add class selected to current target
 	target.classList.add('selected');
 
-	// TODO - save the selected track id to the store
+	// save the selected track id to the store
 	store = { ...store, track_id: target.id };
 }
 
 function handleAccelerate() {
-	// TODO - Invoke the API call to accelerate
+	// Invoke the API call to accelerate
 	accelerate(store.race_id);
 }
 
@@ -312,7 +321,7 @@ function resultsView(positions) {
 }
 
 function raceProgress(positions, initial) {
-	let userPlayer = positions.find((e) => e.id == store.player_id);
+	const userPlayer = positions.find((e) => e.id == store.player_id);
 	if (initial) {
 		userPlayer.driver_name += ' (you)';
 	}
@@ -323,9 +332,7 @@ function raceProgress(positions, initial) {
 	const results = positions
 		.map((p) => {
 			return `
-
 					<h3>${count++} - ${p.driver_name}</h3> <br>
-
 		`;
 		})
 		.join('');

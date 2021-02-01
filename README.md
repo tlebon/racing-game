@@ -1,31 +1,7 @@
-# Welcome to the One and only UdaciRacer Simulation Game
+# Welcome to the One and only Mario Kart!
 
 ## Project Introduction
-
-Here is a partially built-out game that races cars—your job is to complete it! Throughout the game logic, you will find _"TODO"_ comments that must be completed in order for the game to work. You are going to use the asynchronous skills you gained in the course to fill in the blanks in this game.
-
-The game mechanics are this: you select a player and track, the game begins and you accelerate your racer by clicking an acceleration button. As you accelerate so do the other players and the leaderboard live-updates as players change position on the track. The final view is a results page displaying the players' rankings.
-
-The game has three main views:
-
-1. The form to create a race
-
-2. The race progress view (this includes the live-updating leaderboard and acceleration button)
-
-3. The race results view
-
-## Starter Code
-
-We have supplied you with the following:
-
-1. An API. The API is provided in the form of a binary held in the bin folder. You never need to open the binary file, as there are no edits you can make to it. Your work will be 100% in the front end.
-
-2. HTML Views. The focus of this course is not UI development or styling practice, so we have already provided you with pieces of UI, all you have to do is call them at the right times.
-
-## Getting Started
-
-In order to build this game, we need to run two things: the game engine API and the front end.
-
+This is a project I made for my Intermediate JS course for my nanodegree. The theme of the project was asynchronous Javascript. Theres many calls to an API to perform a race.
 ### Start the Server
 
 The game engine has been compiled down to a binary so that you can run it on any system. Because of this, you cannot edit the API in any way, it is just a black box that we interact with via the API endpoints.
@@ -52,15 +28,9 @@ Note that this process will use your terminal tab, so you will have to open a ne
 
 First, run your preference of `npm install && npm start` or `yarn && yarn start` at the root of this project. Then you should be able to access http://localhost:3000.
 
-## Project Requirements
-
-This starter code base has directions for you in `src/client/assets/javascript/index.js`. There you will be directed to use certain asynchronous methods to achieve tasks. You will know you're making progress as you can play through more and more of the game.
-
 ### API Calls
 
-To complete the project you must first create the calls to the API. These will all be fetch requests, and all information needed to create the request is provided in the instructions. The API calls are all at the bottom of the file: `src/client/assets/javascript/index.js`.
-
-Below are a list of the API endpoints and the shape of the data they return. These are all of the endpoints you need to complete the game. Consult this information often as you complete the project:
+Below are a list of the API endpoints and the shape of the data they return. This is just for reference.
 
 [GET] `api/tracks`
 List of all tracks
